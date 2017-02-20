@@ -1,5 +1,3 @@
-package java;
-
 public class WeightedQuickUnionWithPathCompression {
 	private int[] parentIds;
 	private int[] sizes;
@@ -48,5 +46,32 @@ public class WeightedQuickUnionWithPathCompression {
 			
 			return rootA;
 		}
+	}
+	
+	public static void main(String[] args) {
+		WeightedQuickUnionWithPathCompression elements = new WeightedQuickUnionWithPathCompression(1000);
+		elements.connect(1, 5);
+		elements.connect(1, 88);
+		elements.connect(1, 607);
+		elements.connect(33, 55);
+		elements.connect(99, 55);
+		elements.connect(3, 1);
+		elements.connect(99, 3);
+
+
+		System.out.println("Are 1 and 5 connected?");
+		System.out.println(String.valueOf(elements.isConnected(1, 5)));
+		
+		System.out.println("Are 1 and 99 connected?");
+		System.out.println(String.valueOf(elements.isConnected(1, 99)));
+		
+	 	System.out.println("Are 1 and 55 connected?");
+		System.out.println(String.valueOf(elements.isConnected(1, 55)));
+		
+		System.out.println("Are 1 and 999 connected?");
+		System.out.println(String.valueOf(elements.isConnected(1, 999)));
+		
+		System.out.println("Are 1 and 2 connected?");
+		System.out.println(String.valueOf(elements.isConnected(1, 2)));
 	}
 }

@@ -1,5 +1,3 @@
-package java;
-
 public class QuickFind {
 	// Represent connected components as groups of elements in the array with equal integer IDs. 
 	// Initially there are N connected components, each containing a single element and having
