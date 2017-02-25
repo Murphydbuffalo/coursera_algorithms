@@ -16,7 +16,7 @@ public class PercolationStats {
     }
 
     t = trials;
-    int numberOfSites = n * n;
+    double numberOfSites = (double) n * n;
     results = new double[t];
 
     for (int i = 0; i < t; i++) {
@@ -34,7 +34,7 @@ public class PercolationStats {
         perc.open(randomRow, randomColumn);
       }
 
-      results[i] = (double) perc.numberOfOpenSites() / (double) numberOfSites;
+      results[i] = (double) perc.numberOfOpenSites() / numberOfSites;
     }
   };
 
