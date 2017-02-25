@@ -74,7 +74,7 @@ public class Percolation {
      }
    }
 
-   // is site (row, col) open?
+   // is site (row, col) open? Sites are either open or blocked.
    public boolean isOpen(int row, int col) {
      checkIndexIsInBounds(row, col);
      int index = arrayIndexFromRowAndColumn(row, col);
@@ -82,9 +82,11 @@ public class Percolation {
      return open[index] == 1;
    }
 
-   // is site (row, col) full?
+   // is site (row, col) full? "Full" means that the site is both open and connected
+   // to the top row of sites by its connecte component.
    public boolean isFull(int row, int col) {
-     return !isOpen(row, col);
+     int index = arrayIndexFromRowAndColumn(row, col);
+     return isOpen(row, col) && UnionFind.connected(0, index);
    }
 
    // number of open sites
