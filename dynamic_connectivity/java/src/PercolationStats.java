@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class PercolationStats {
   // For each trial, what percentage of sites needed to be open for percolation to occur?
-  private int[] results;
+  private double[] results;
 
   // Number of trials
   private int t;
@@ -16,7 +16,8 @@ public class PercolationStats {
     }
 
     t = trials;
-    results = new int[t];
+    int numberOfSites = n * n;
+    results = new double[t];
 
     for (int i = 0; i < t; i++) {
       Percolation perc = new Percolation(n);
@@ -25,10 +26,15 @@ public class PercolationStats {
         int randomRow = StdRandom.uniform(n) + 1;
         int randomColumn = StdRandom.uniform(n) + 1;
 
+        while (perc.isOpen(randomRow, randomColumn)) {
+          randomRow = StdRandom.uniform(n) + 1;
+          randomColumn = StdRandom.uniform(n) + 1;
+        }
+
         perc.open(randomRow, randomColumn);
       }
 
-      results[i] = perc.numberOfOpenSites() / (n * n);
+      results[i] = (double) perc.numberOfOpenSites() / (double) numberOfSites;
     }
   };
 
