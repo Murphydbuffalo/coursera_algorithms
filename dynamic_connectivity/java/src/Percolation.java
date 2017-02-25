@@ -1,18 +1,22 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-   private WeightedQuickUnionUF UnionFind;
    private int n;
+   private int numberOfSites;
    private int[] open;
+   private int numberOfOpenSites;
+   private WeightedQuickUnionUF UnionFind;
 
    // create n-by-n grid of sites, with two additional "virtual" sites at the top
    // and bottom of the grid. Begin with all sites blocked (open[i] == 0).
    public Percolation(int gridDimension) {
       n = gridDimension;
-      int numberOfSites = (n * n) + 2;
+      numberOfSites = (n * n) + 2;
       open = new int[numberOfSites];
-
+      // Don't include the two virtual sites in this count.
+      numberOfOpenSites = 0;
       UnionFind = new WeightedQuickUnionUF(numberOfSites);
+
       // Open the two virtual sites and connect virtual top site to all sites in
       // the top row and connect the virtual bottom site to all sites on the bottom row.
       open[0] = 1;
@@ -46,6 +50,7 @@ public class Percolation {
 
      int index = arrayIndexFromRowAndColumn(row, col);
      open[index] = 1;
+     numberOfOpenSites = numberOfOpenSites + 1;
 
      int indexTop = arrayIndexFromRowAndColumn(row + 1, col);
      int indexBottom = arrayIndexFromRowAndColumn(row - 1, col);
@@ -84,21 +89,12 @@ public class Percolation {
 
    // number of open sites
    public int numberOfOpenSites() {
-     int count = 0;
-
-     for (int i = 1; i <= n * n; i++) {
-       System.out.println(String.format("count is %d, i is %d, open[i] is %d", count, i, open[i]));
-       count = count + open[i];
-     }
-
-     return count;
+     return numberOfOpenSites;
    }
 
    // does the system percolate?
    public boolean percolates() {
-     int lastSiteIndex = (n * n) + 1;
-     int firstSiteIndex = 0;
-     return UnionFind.connected(firstSiteIndex, lastSiteIndex);
+     return UnionFind.connected(0, numberOfSites - 1);
    }
 
    // test client (optional)
