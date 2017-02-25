@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.Out;
+import edu.princeton.cs.algs4.StdOut;
 
 public class PercolationStats {
   // For each trial, what percentage of sites needed to be open for percolation to occur?
@@ -11,18 +11,19 @@ public class PercolationStats {
 
   // perform trials independent experiments on an n-by-n grid
   public PercolationStats(int n, int trials) {
-    if (n < 1 || t < 1) {
+    if (n < 1 || trials < 1) {
       throw new IllegalArgumentException("Both n and trials must be greater than 0.");
     }
 
     t = trials;
+    results = new int[t];
 
     for (int i = 0; i < t; i++) {
       Percolation perc = new Percolation(n);
 
       while(!perc.percolates()) {
-        int randomRow = StdRandom.uniform(n);
-        int randomColumn = StdRandom.uniform(n);
+        int randomRow = StdRandom.uniform(n) + 1;
+        int randomColumn = StdRandom.uniform(n) + 1;
 
         perc.open(randomRow, randomColumn);
       }
@@ -66,8 +67,8 @@ public class PercolationStats {
 
     PercolationStats stats = new PercolationStats(n, t);
 
-    System.out.println(String.format("mean                    = %d", stats.mean()));
-    System.out.println(String.format("stddev                  = %d", stats.stddev()));
-    System.out.println(String.format("95% confidence interval = [%d, %d]", stats.confidenceLo(), stats.confidenceHi()));
+    StdOut.printf(String.format("mean                    = %f\n", stats.mean()));
+    StdOut.printf(String.format("stddev                  = %f\n", stats.stddev()));
+    StdOut.printf(String.format("95 confidence interval  = [%f, %f]\n", stats.confidenceLo(), stats.confidenceHi()));
   };
 }
