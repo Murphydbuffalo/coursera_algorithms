@@ -33,7 +33,6 @@ public class Percolation {
   }
 
   private int[] rowAndColumnFromArrayIndex(int index) {
-    // System.out.println(String.format("index is %d"))
     int row = (index / n) + 1;
     int col = (index % n);
 
@@ -88,7 +87,6 @@ public class Percolation {
 
   // is site (row, col) open? Sites are either open or blocked.
   public boolean isOpen(int row, int col) {
-    System.out.println(String.format("row is %d and col is %d. n is %d", row, col, n));
     checkIndexIsInBounds(row, col);
     int index = arrayIndexFromRowAndColumn(row, col);
 
@@ -114,7 +112,6 @@ public class Percolation {
     for (int i = 1; i <= n; i++) {
       int[] rowAndColumn = rowAndColumnFromArrayIndex(lastSiteIndex - i);
 
-      System.out.println(String.format("n is %d, lastSiteIndex - i is %d, row is %d and column is %d", n, lastSiteIndex - i, rowAndColumn[0], rowAndColumn[1]));
       if (isFull(rowAndColumn[0], rowAndColumn[1])) {
         unionFind.union(lastSiteIndex, lastSiteIndex - i);
       }
