@@ -5,7 +5,7 @@ public class Percolation {
   private int numberOfSites;
   private int[] open;
   private int numberOfOpenSites;
-  private WeightedQuickUnionUF UnionFind;
+  private WeightedQuickUnionUF unionFind;
 
   // create n-by-n grid of sites, with two additional "virtual" sites at the top
   // and bottom of the grid. Begin with all sites blocked (open[i] == 0).
@@ -15,15 +15,14 @@ public class Percolation {
     open = new int[numberOfSites];
     // Don't include the two virtual sites in this count.
     numberOfOpenSites = 0;
-    UnionFind = new WeightedQuickUnionUF(numberOfSites);
+    unionFind = new WeightedQuickUnionUF(numberOfSites);
 
-    // Open the two virtual sites and connect virtual top site to all sites in
-    // the top row.
+    // Open the two virtual sites and connect virtual top site to all sites in the top row.
     open[0] = 1;
     open[numberOfSites - 1] = 1;
 
     for (int i = 1; i <= n; i++) {
-      UnionFind.union(0, i);
+      unionFind.union(0, i);
     }
   }
 
@@ -34,11 +33,12 @@ public class Percolation {
   }
 
   private int[] rowAndColumnFromArrayIndex(int index) {
+    // System.out.println(String.format("index is %d"))
     int row = (index / n) + 1;
     int col = (index % n);
 
     if (col == 0) {
-      col = 10;
+      col = n;
       row = row - 1;
     }
 
@@ -67,27 +67,28 @@ public class Percolation {
 
     if (indexIsInBounds(row + 1, col) && isOpen(row + 1, col)) {
       int indexTop = arrayIndexFromRowAndColumn(row + 1, col);
-      UnionFind.union(index, indexTop);
+      unionFind.union(index, indexTop);
     }
 
     if (indexIsInBounds(row - 1, col) && isOpen(row - 1, col)) {
       int indexBottom = arrayIndexFromRowAndColumn(row - 1, col);
-      UnionFind.union(index, indexBottom);
+      unionFind.union(index, indexBottom);
     }
 
     if (indexIsInBounds(row, col + 1) && isOpen(row, col + 1)) {
       int indexRight = arrayIndexFromRowAndColumn(row, col + 1);
-      UnionFind.union(index, indexRight);
+      unionFind.union(index, indexRight);
     }
 
     if (indexIsInBounds(row, col - 1) && isOpen(row, col - 1)) {
       int indexLeft = arrayIndexFromRowAndColumn(row, col - 1);
-      UnionFind.union(index, indexLeft);
+      unionFind.union(index, indexLeft);
     }
   }
 
   // is site (row, col) open? Sites are either open or blocked.
   public boolean isOpen(int row, int col) {
+    System.out.println(String.format("row is %d and col is %d. n is %d", row, col, n));
     checkIndexIsInBounds(row, col);
     int index = arrayIndexFromRowAndColumn(row, col);
 
@@ -98,7 +99,7 @@ public class Percolation {
   // to the top row of sites by its connecte component.
   public boolean isFull(int row, int col) {
     int index = arrayIndexFromRowAndColumn(row, col);
-    return isOpen(row, col) && UnionFind.connected(0, index);
+    return isOpen(row, col) && unionFind.connected(0, index);
   }
 
   // number of open sites
@@ -113,12 +114,13 @@ public class Percolation {
     for (int i = 1; i <= n; i++) {
       int[] rowAndColumn = rowAndColumnFromArrayIndex(lastSiteIndex - i);
 
+      System.out.println(String.format("n is %d, lastSiteIndex - i is %d, row is %d and column is %d", n, lastSiteIndex - i, rowAndColumn[0], rowAndColumn[1]));
       if (isFull(rowAndColumn[0], rowAndColumn[1])) {
-        UnionFind.union(lastSiteIndex, lastSiteIndex - i);
+        unionFind.union(lastSiteIndex, lastSiteIndex - i);
       }
     }
 
-    return UnionFind.connected(0, numberOfSites - 1);
+    return unionFind.connected(0, numberOfSites - 1);
   }
 
   // test client (optional)
