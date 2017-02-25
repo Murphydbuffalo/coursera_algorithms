@@ -10,6 +10,10 @@ public class Percolation {
   // create n-by-n grid of sites, with two additional "virtual" sites at the top
   // and bottom of the grid. Begin with all sites blocked (open[i] == 0).
   public Percolation(int gridDimension) {
+    if (gridDimension < 1) {
+      throw new IllegalArgumentException("The grid dimension n must be greater than 0.");
+    }
+
     n = gridDimension;
     numberOfSites = (n * n) + 2;
     open = new int[numberOfSites];
@@ -61,6 +65,11 @@ public class Percolation {
     checkIndexIsInBounds(row, col);
 
     int index = arrayIndexFromRowAndColumn(row, col);
+
+    if (open[index] == 1) {
+      return;
+    }
+
     open[index] = 1;
     numberOfOpenSites = numberOfOpenSites + 1;
 
