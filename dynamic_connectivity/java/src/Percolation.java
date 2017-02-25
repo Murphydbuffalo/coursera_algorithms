@@ -18,13 +18,12 @@ public class Percolation {
       UnionFind = new WeightedQuickUnionUF(numberOfSites);
 
       // Open the two virtual sites and connect virtual top site to all sites in
-      // the top row and connect the virtual bottom site to all sites on the bottom row.
+      // the top row.
       open[0] = 1;
       open[numberOfSites - 1] = 1;
 
       for (int i = 1; i <= n; i++) {
         UnionFind.union(0, i);
-        UnionFind.union(numberOfSites - 1, numberOfSites - 1 - i);
       }
    }
 
@@ -32,6 +31,20 @@ public class Percolation {
    // So this method returns values 1 to n^2, rather than 0 to n^2 - 1.
    private int arrayIndexFromRowAndColumn(int row, int column) {
      return (n * (row - 1)) + column;
+   }
+
+   private int[] rowAndColumnFromArrayIndex(int index) {
+     int row = (index / n) + 1;
+     int col = (index % n);
+
+     if (col == 0) {
+       col = 10;
+       row = row - 1;
+     }
+
+     int[] result = {row, col};
+
+     return result;
    }
 
    private boolean indexIsInBounds(int row, int col) {
@@ -96,6 +109,13 @@ public class Percolation {
 
    // does the system percolate?
    public boolean percolates() {
+     for (int i = 1; i <= n; i++) {
+       int[] rowAndColumn = rowAndColumnFromArrayIndex(i);
+
+       if (isFull(rowAndColumn[0], rowAndColumn[1])) {
+         UnionFind.union(numberOfSites - 1, numberOfSites - 1 - i);
+       }
+     }
      return UnionFind.connected(0, numberOfSites - 1);
    }
 
