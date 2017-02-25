@@ -3,7 +3,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
   private int n;
   private int numberOfSites;
-  private int[] open;
+  private byte[] open;
   private int numberOfOpenSites;
   private WeightedQuickUnionUF unionFind;
 
@@ -16,7 +16,7 @@ public class Percolation {
 
     n = gridDimension;
     numberOfSites = (n * n) + 2;
-    open = new int[numberOfSites];
+    open = new byte[numberOfSites];
     // Don't include the two virtual sites in this count.
     numberOfOpenSites = 0;
     unionFind = new WeightedQuickUnionUF(numberOfSites);
@@ -24,10 +24,6 @@ public class Percolation {
     // Open the two virtual sites and connect virtual top site to all sites in the top row.
     open[0] = 1;
     open[numberOfSites - 1] = 1;
-
-    for (int i = 1; i <= n; i++) {
-      unionFind.union(0, i);
-    }
   }
 
   // Includes offset of 1 for the "virtual" site at the top of the grid.
@@ -73,6 +69,14 @@ public class Percolation {
     open[index] = 1;
     numberOfOpenSites = numberOfOpenSites + 1;
 
+    if (row == 1) {
+      unionFind.union(0, index);
+    }
+
+    if (row == n && unionFind.connected(0, index)) {
+      unionFind.union(numberOfSites - 1, index);
+    }
+
     if (indexIsInBounds(row + 1, col) && isOpen(row + 1, col)) {
       int indexTop = arrayIndexFromRowAndColumn(row + 1, col);
       unionFind.union(index, indexTop);
@@ -116,16 +120,6 @@ public class Percolation {
 
   // does the system percolate?
   public boolean percolates() {
-    int lastSiteIndex = numberOfSites - 1;
-
-    for (int i = 1; i <= n; i++) {
-      int[] rowAndColumn = rowAndColumnFromArrayIndex(lastSiteIndex - i);
-
-      if (isFull(rowAndColumn[0], rowAndColumn[1])) {
-        unionFind.union(lastSiteIndex, lastSiteIndex - i);
-      }
-    }
-
     return unionFind.connected(0, numberOfSites - 1);
   }
 
