@@ -28,7 +28,7 @@ public class PercolationStats {
         perc.open(randomRow, randomColumn);
       }
 
-      results[i] = perc.numberOfOpenSites();
+      results[i] = perc.numberOfOpenSites() / (n * n);
     }
   };
 
