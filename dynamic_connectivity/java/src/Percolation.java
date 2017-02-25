@@ -5,20 +5,37 @@ public class Percolation {
    private int n;
    private int[] open;
 
-   // create n-by-n grid, with all sites blocked
-   public Percolation(int n) {
-      n = n;
-      open = new int[n];
-      UnionFind = new WeightedQuickUnionUF((n * n) + 2);
+   // create n-by-n grid of sites, with two additional "virtual" sites at the top
+   // and bottom of the grid. Begin with all sites blocked (open[i] == 0).
+   public Percolation(int gridDimension) {
+      n = gridDimension;
+      int numberOfSites = (n * n) + 2;
+      open = new int[numberOfSites];
+
+      UnionFind = new WeightedQuickUnionUF(numberOfSites);
+      // Open the two virtual sites and connect virtual top site to all sites in
+      // the top row and connect the virtual bottom site to all sites on the bottom row.
+      open[0] = 1;
+      open[numberOfSites - 1] = 1;
+
+      for (int i = 1; i <= n; i++) {
+        UnionFind.union(0, i);
+        UnionFind.union(numberOfSites - 1, numberOfSites - 1 - i);
+      }
    }
 
    // Includes offset of 1 for the "virtual" site at the top of the grid.
+   // So this method returns values 1 to n^2, rather than 0 to n^2 - 1.
    private int arrayIndexFromRowAndColumn(int row, int column) {
-     return (n * (row - 1)) + column + 1;
+     return (n * (row - 1)) + column;
    }
 
-   private boolean checkIndexIsInBounds(int row, int col) {
-     if (row < 1 || row > n || col < 1 || col > n) {
+   private boolean indexIsInBounds(int row, int col) {
+     return !(row < 1 || row > n || col < 1 || col > n);
+   }
+
+   private void checkIndexIsInBounds(int row, int col) {
+     if (!indexIsInBounds(row, col)) {
        throw new IndexOutOfBoundsException("Row and column arguments must be in bounds.");
      }
    }
@@ -35,20 +52,20 @@ public class Percolation {
      int indexRight = arrayIndexFromRowAndColumn(row, col + 1);
      int indexLeft = arrayIndexFromRowAndColumn(row, col - 1);
 
-     if (isOpen(row + 1, col)) {
+     if (indexIsInBounds(row + 1, col) && isOpen(row + 1, col)) {
         UnionFind.union(index, indexTop);
      }
 
-     if (isOpen(row - 1, col)) {
+     if (indexIsInBounds(row - 1, col) && isOpen(row - 1, col)) {
         UnionFind.union(index, indexBottom);
      }
 
-     if (isOpen(row, col + 1)) {
+     if (indexIsInBounds(row, col + 1) && isOpen(row, col + 1)) {
         UnionFind.union(index, indexRight);
      }
 
-     if (isOpen(row, col - 1)) {
-        UnionFind.union(index, indexBottom);
+     if (indexIsInBounds(row, col - 1) && isOpen(row, col - 1)) {
+        UnionFind.union(index, indexLeft);
      }
    }
 
@@ -69,14 +86,19 @@ public class Percolation {
    public int numberOfOpenSites() {
      int count = 0;
 
-     for (int i = 1; i < n + 1; i++) {
-
+     for (int i = 1; i <= n * n; i++) {
+       System.out.println(String.format("count is %d, i is %d, open[i] is %d", count, i, open[i]));
+       count = count + open[i];
      }
+
+     return count;
    }
 
    // does the system percolate?
    public boolean percolates() {
-     return UnionFind.connected(0, (n * n) + 2);
+     int lastSiteIndex = (n * n) + 1;
+     int firstSiteIndex = 0;
+     return UnionFind.connected(firstSiteIndex, lastSiteIndex);
    }
 
    // test client (optional)
