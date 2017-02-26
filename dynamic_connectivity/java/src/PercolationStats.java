@@ -26,11 +26,6 @@ public class PercolationStats {
         int randomRow = StdRandom.uniform(n) + 1;
         int randomColumn = StdRandom.uniform(n) + 1;
 
-        while (perc.isOpen(randomRow, randomColumn)) {
-          randomRow = StdRandom.uniform(n) + 1;
-          randomColumn = StdRandom.uniform(n) + 1;
-        }
-
         perc.open(randomRow, randomColumn);
       }
 
