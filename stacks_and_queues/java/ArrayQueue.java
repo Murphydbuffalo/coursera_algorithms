@@ -1,16 +1,16 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class ArrayQueue {
+public class ArrayQueue<Item> {
   private int head = 0;
   private int tail = 0;
-  private String[] array;
+  private Item[] array;
   public ArrayQueue() {
-    array = new String[1];
+    array = (Item[]) new Object[1];
   }
 
-  private String[] resize(int size) {
-    String[] newArray = new String[size];
+  private Item[] resize(int size) {
+    Item[] newArray = (Item[]) new Object[size];
 
     int newTail = 0;
 
@@ -26,7 +26,7 @@ public class ArrayQueue {
     return array;
   }
 
-  public String enqueue(String value) {
+  public Item enqueue(Item value) {
     if (tail == array.length - 1) {
       resize(array.length * 2);
     }
@@ -35,12 +35,12 @@ public class ArrayQueue {
     return value;
   }
 
-  public String dequeue() {
+  public Item dequeue() {
     if ((tail - head) < array.length / 4) {
       resize(array.length / 2);
     }
 
-    String value = array[head];
+    Item value = array[head];
     array[head] = null;
     head++;
 
