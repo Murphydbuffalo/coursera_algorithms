@@ -12,17 +12,22 @@ public class ArrayQueue {
   private String[] resize(int size) {
     String[] newArray = new String[size];
 
-    for (int i = head; i < (tail - head); i++) {
-      newArray[i] = array[i];
+    int newTail = 0;
+
+    for (int i = 0; (head + i) <= tail; i++) {
+      newArray[i] = array[head + i];
+      newTail = i;
     }
 
     array = newArray;
+    head = 0;
+    tail = newTail;
 
     return array;
   }
 
   public String enqueue(String value) {
-    if ((tail - head) == array.length - 1) {
+    if (tail == array.length - 1) {
       resize(array.length * 2);
     }
 
@@ -31,13 +36,18 @@ public class ArrayQueue {
   }
 
   public String dequeue() {
-    if ((tail - head) < (array.length - 1) / 4) {
-      resize((array.length - 1) / 2);
+    if ((tail - head) < array.length / 4) {
+      resize(array.length / 2);
     }
 
     String value = array[head];
     array[head] = null;
     head++;
+
+    if (head == tail && array[head] == null) {
+      head = 0;
+      tail = 0;
+    }
 
     return value;
   }
