@@ -61,7 +61,7 @@ public class ArrayQueue<Item> {
   }
 
   public static void main(String[] args) {
-    ArrayQueue stack = new ArrayQueue();
+    ArrayQueue<String> stack = new ArrayQueue<String>();
 
     while (!StdIn.isEmpty()) {
       String s = StdIn.readString();

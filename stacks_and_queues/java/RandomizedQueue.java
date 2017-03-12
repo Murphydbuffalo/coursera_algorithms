@@ -118,10 +118,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public static void main(String[] args) {
-    RandomizedQueue q = new RandomizedQueue();
+    RandomizedQueue<String> q = new RandomizedQueue<String>();
 
     while (!StdIn.isEmpty()) {
       String s = StdIn.readString();
+
       if (s.equals("-")) {
         StdOut.println(String.format("Dequeuing %s", q.dequeue()));
       } else {
