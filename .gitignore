@@ -2,3 +2,5 @@
 *.zip
 percolation/
 queues/
+.DS_Store
+
