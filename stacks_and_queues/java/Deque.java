@@ -1,3 +1,6 @@
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.lang.UnsupportedOperationException;
@@ -115,6 +118,22 @@ public class Deque<Item> implements Iterable<Item> {
   }
 
   public static void main(String[] args) {
+    Deque<String> deque = new Deque<String>();
 
+    while (!StdIn.isEmpty()) {
+      String s = StdIn.readString();
+
+      if (s.equals("-first")) {
+        StdOut.println(String.format("Removing %s from the front of the deque", deque.removeFirst()));
+      } else if (s.equals("-last")) {
+        StdOut.println(String.format("Removing %s from the back of the deque", deque.removeLast()));
+      } else if (StdRandom.uniform(1) == 1){
+        StdOut.println(String.format("Adding %s to the front of the deque", s));
+        deque.addFirst(s);
+      } else {
+        StdOut.println(String.format("Adding %s to the back of the deque", s));
+        deque.addLast(s);
+      }
+    }
   }
 }
