@@ -36,7 +36,7 @@ public class ArrayQueue<Item> {
   }
 
   public Item dequeue() {
-    if ((tail - head) < array.length / 4) {
+    if (size() < array.length / 4) {
       resize(array.length / 2);
     }
 
@@ -53,11 +53,11 @@ public class ArrayQueue<Item> {
   }
 
   public boolean empty() {
-    return head == 0 && array[0] == null;
+    return head == tail && array[head] == null;
   }
 
   public int size() {
-    return array.length;
+    return tail - head;
   }
 
   public static void main(String[] args) {
