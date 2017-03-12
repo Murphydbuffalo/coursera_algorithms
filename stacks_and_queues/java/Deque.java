@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.lang.UnsupportedOperationException;
 
 // Must implement via linked lists to meet performance requirement, which is that
 // each operation should take constant time *in the worst case* (so no expensive
@@ -11,7 +10,7 @@ import java.lang.UnsupportedOperationException;
 public class Deque<Item> implements Iterable<Item> {
   private Node head;
   private Node tail;
-  private int numberOfNodes;
+  private int numberOfNodes = 0;
   private class Node {
     private Node next;
     private Node prev;
@@ -23,7 +22,7 @@ public class Deque<Item> implements Iterable<Item> {
   }
 
   public boolean isEmpty() {
-    return head == null && tail == null;
+    return numberOfNodes == 0;
   }
 
   public int size() {
@@ -39,7 +38,10 @@ public class Deque<Item> implements Iterable<Item> {
     head = new Node();
     head.next = oldHead;
     head.value = item;
-    oldHead.prev = head;
+
+    if (oldHead != null) {
+      oldHead.prev = head;
+    }
 
     if (tail == null) {
       tail = head;
@@ -71,7 +73,7 @@ public class Deque<Item> implements Iterable<Item> {
 
   public Item removeFirst() {
     if (isEmpty()) {
-      throw new NullPointerException("Deque is empty.");
+      throw new NoSuchElementException("Deque is empty.");
     }
 
     Item value = head.value;
@@ -83,12 +85,16 @@ public class Deque<Item> implements Iterable<Item> {
 
   public Item removeLast() {
     if (isEmpty()) {
-      throw new NullPointerException("Deque is empty.");
+      throw new NoSuchElementException("Deque is empty.");
     }
 
     Item value = tail.value;
     tail = tail.prev;
-    tail.next = null;
+
+    if (tail != null) {
+      tail.next = null;
+    }
+
     numberOfNodes--;
 
     return value;
@@ -114,7 +120,7 @@ public class Deque<Item> implements Iterable<Item> {
       }
 
       Item value = current.value;
-      Node next = current.next;
+      current = current.next;
 
       return value;
     }
@@ -130,7 +136,7 @@ public class Deque<Item> implements Iterable<Item> {
         StdOut.println(String.format("Removing %s from the front of the deque", deque.removeFirst()));
       } else if (s.equals("-last")) {
         StdOut.println(String.format("Removing %s from the back of the deque", deque.removeLast()));
-      } else if (StdRandom.uniform(2) == 1){
+      } else if (StdRandom.uniform(2) == 1) {
         StdOut.println(String.format("Adding %s to the front of the deque", s));
         deque.addFirst(s);
       } else {
