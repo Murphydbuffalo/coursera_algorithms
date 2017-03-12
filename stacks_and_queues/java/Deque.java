@@ -2,9 +2,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.lang.UnsupportedOperationException;
 
-// Must implement via linked lists to meet memory requirement, which is that each
-// operation should take constant time *in the worst case* (so no expensive array
-// resize operations).
+// Must implement via linked lists to meet performance requirement, which is that
+// each operation should take constant time *in the worst case* (so no expensive
+// array resize operations).
 public class Deque<Item> implements Iterable<Item> {
   private Node head;
   private Node tail;
@@ -81,8 +81,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     Item value = tail.value;
-    tail.prev.next = null;
     tail = tail.prev;
+    tail.next = null;
     numberOfNodes--;
 
     return value;
