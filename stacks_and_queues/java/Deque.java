@@ -57,7 +57,10 @@ public class Deque<Item> implements Iterable<Item> {
     tail = new Node();
     tail.value = item;
     tail.prev = oldTail;
-    oldTail.next = tail;
+
+    if (oldTail != null) {
+      oldTail.next = tail;
+    }
 
     if (head == null) {
       head = tail;
@@ -127,7 +130,7 @@ public class Deque<Item> implements Iterable<Item> {
         StdOut.println(String.format("Removing %s from the front of the deque", deque.removeFirst()));
       } else if (s.equals("-last")) {
         StdOut.println(String.format("Removing %s from the back of the deque", deque.removeLast()));
-      } else if (StdRandom.uniform(1) == 1){
+      } else if (StdRandom.uniform(2) == 1){
         StdOut.println(String.format("Adding %s to the front of the deque", s));
         deque.addFirst(s);
       } else {
