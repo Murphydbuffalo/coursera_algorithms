@@ -2,7 +2,6 @@ import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import java.util.NoSuchElementException;
-import java.lang.UnsupportedOperationException;
 import java.util.Iterator;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
@@ -30,7 +29,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     return array;
   }
 
-  public Item enqueue(Item value) {
+  public void enqueue(Item value) {
     if (value == null) {
       throw new NullPointerException("Cannot enqueue null values.");
     }
@@ -41,7 +40,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     array[tail] = value;
     tail++;
-    return value;
   }
 
   // Only grab random elements between head and tail so that we don't grab a null value
@@ -50,7 +48,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public Item dequeue() {
-    if (empty()) {
+    if (isEmpty()) {
       throw new NoSuchElementException("The queue is empty.");
     }
 
@@ -72,14 +70,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public Item sample() {
-    if (empty()) {
+    if (isEmpty()) {
       throw new NoSuchElementException("The queue is empty.");
     }
 
     return array[randomIndex()];
   }
 
-  public boolean empty() {
+  public boolean isEmpty() {
     return head == tail && array[head] == null;
   }
 
