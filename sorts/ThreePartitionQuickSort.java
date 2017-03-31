@@ -39,17 +39,12 @@ public class ThreePartitionQuickSort {
   }
 
   private static void sort(int[] array, int start, int end) {
-    System.out.println(String.format("start is %d", start));
-    System.out.println(String.format("end is %d", end));
     int partitionSize = end - start;
     if (partitionSize < 1) {
-      System.out.println("\nReturning!\n");
       return;
     }
 
     int[] partitionIndexes = partition(array, start, end);
-    System.out.println(String.format("partitionIndexes[0] is %d", partitionIndexes[0]));
-    System.out.println(String.format("partitionIndexes[1] is %d", partitionIndexes[1]));
     sort(array, start, partitionIndexes[0]);
     sort(array, partitionIndexes[1], end);
   }
@@ -59,7 +54,6 @@ public class ThreePartitionQuickSort {
     int i = start;
     int gt = end;
 
-    System.out.println(String.format("And lt, i, and gt are %d, %d, and %d\n", lt, i, gt));
     while (i <= gt) {
       if (a[lt] > a[i]) {
         swap(a, i++, lt++);
@@ -70,8 +64,6 @@ public class ThreePartitionQuickSort {
       }
     }
 
-    System.out.println("After partitioning, array is");
-    System.out.println(Arrays.toString(a));
     lt = lt == start ? start : lt - 1;
     gt = gt == end ? end : gt + 1;
 
