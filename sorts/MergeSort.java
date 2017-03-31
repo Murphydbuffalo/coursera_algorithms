@@ -1,3 +1,15 @@
+// Mergesort is a recursive "divide-and-conquer" algorithm.
+// It recursively divides the array to be sorted into halves, and upon reaching
+// halves of only one element the algorithm merges adjacent halves back together.
+//
+// The actual comparison and swapping of array elements is done in the merge step,
+// using an extra array as space for storing the sorted values output by the merge.
+//
+// The base case of the recursion, where each subarray is only one element long,
+// implies that each of those subarrays is by definition sorted.
+// And so as each merge step is performed it is assumed that the subarrays being
+// merged are each sorted. This makes the sorting performed when merging two such
+// subarrays much more efficient.
 import java.util.Arrays;
 import edu.princeton.cs.algs4.StdRandom;
 
