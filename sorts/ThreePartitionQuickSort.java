@@ -1,15 +1,19 @@
 // Like mergesort, quicksort is a recursive algorithm.
 // Unlike mergesort, quicksort does most of its work before recursing.
+//
 // The bulk of that work is *partitioning* the array into 3 parts:
 // A middle partition, where all elements are equal to a randomly chosen value
 // from the array.
+//
 // A left partition, where all elements are less than the randomly chosen partitioning
 // value.
+//
 // And a right partition, where all element are greater than the randomly chosen
 // partitioning value.
+//
 // Once the array is partitioned, we recurse by calling quicksort again on the left
 // and right partitions.
-// This will partition both of those segements based a new random value from each.
+//
 // Our base case is when we encounter an array of length 1, which is by definition
 // sorted.
 import java.util.Arrays;
